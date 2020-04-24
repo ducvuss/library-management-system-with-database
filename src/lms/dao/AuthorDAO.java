@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lms.entity.Author;
+import lms.utils.Table;
 
 /**
  * @author ducba
@@ -29,7 +30,7 @@ public class AuthorDAO implements BaseDAO<Author> {
 	
 	public List<Author> getAuthors() throws SQLException {
 		Connection sqlConnection = DriverManager.getConnection(url, user, password);
-		return extractData(read(sqlConnection, "select * from tbl_author"));
+		return extractData(read(sqlConnection, new Table("tbl_author").select()));
 	}
 	
 	public List<Author> extractData(ResultSet results) throws SQLException {
