@@ -12,7 +12,14 @@ public class Book {
 	private String title;
 	private Integer publisherId;
 	private Publisher publisher;
+
+	public Book() {
+	}
 	
+	public Book(String title) {
+		this.title = title;
+	}
+
 	public Integer getBookId() {
 		return bookId;
 	}
