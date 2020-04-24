@@ -16,7 +16,7 @@ import lms.utils.Table;
  * @param <T>
  *
  */
-public abstract class BaseDAO<T> implements Queryable<T> {
+public abstract class BaseDAO<T> implements Executable<T> {
 
 	public static final String url = "jdbc:mysql://localhost:3306/library?useSSL=false";
 	public static final String user = "root";

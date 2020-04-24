@@ -1,7 +1,7 @@
 import java.sql.SQLException;
 
 import lms.dao.AuthorDAO;
-import lms.dao.Queryable;
+import lms.dao.Executable;
 import lms.entity.Author;
 
 public class App {
