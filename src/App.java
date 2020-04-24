@@ -3,8 +3,10 @@ import java.util.Objects;
 
 import lms.dao.AuthorDAO;
 import lms.dao.BookDAO;
+import lms.dao.PublisherDAO;
 import lms.entity.Author;
 import lms.entity.Book;
+import lms.entity.Publisher;
 
 public class App {
 
@@ -20,7 +22,13 @@ public class App {
 		bookDAO.delete(31);
 		bookDAO.put(33, new Book("The Best Book Ever II"));
 //		bookDAO.post(new Book("Pronto"));
-		bookDAO.get().forEach(x -> System.out.println(x.getBookId() + " " + x.getTitle()));
+//		bookDAO.get().forEach(x -> System.out.println(x.getBookId() + " " + x.getTitle()));
+
+		PublisherDAO publisherDAO = new PublisherDAO();
+//		publisherDAO.put(11, new Publisher("FreeBook"));
+		publisherDAO.delete(21);
+		publisherDAO.get().forEach(x -> System.out.println(x.getPublisherId() + " " + x.getPublisherName()));
+
 	}
 
 }
