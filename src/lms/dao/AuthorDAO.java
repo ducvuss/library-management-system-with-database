@@ -47,7 +47,7 @@ public class AuthorDAO extends BaseDAO<Author> {
 
 	@Override
 	public void delete(Integer authorId) throws SQLException {
-		save("DELETE FROM tbl_author WHERE authorId=?", new Object[] { authorId });
+		save(new Table(tableName).delete("authorId"), new Object[] { authorId });
 	}
 
 	@Override

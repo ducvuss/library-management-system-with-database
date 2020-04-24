@@ -31,6 +31,10 @@ public class Table {
 		return String.format("INSERT INTO %s VALUES (?)", columns);
 	}
 
+	public String delete(String columnName) {
+		return String.format("DELETE FROM %s WHERE %s=?", tableName, columnName);
+	}
+
 	/**
 	 * @param columnNames
 	 * @return
