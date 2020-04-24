@@ -8,12 +8,17 @@ package lbs.entity;
  *
  */
 public class Author {
+	private Integer authorId;
 	private String authorName;
 
-	public Author(String authorName) {
-		this.setAuthorName(authorName);
+	public Integer getAuthorId() {
+		return authorId;
 	}
 
+	public void setAuthorId(Integer authorId) {
+		this.authorId = authorId;
+	}
+	
 	public String getAuthorName() {
 		return authorName;
 	}
