@@ -3,9 +3,6 @@
  */
 package lms.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,21 +15,42 @@ import lms.utils.Table;
  * @author ducba
  *
  */
-public class AuthorDAO implements Queryable<Author> {
-	public static final String url = "jdbc:mysql://localhost:3306/library?useSSL=false";
-	public static final String user = "root";
-	public static final String password = "test";
+public class AuthorDAO extends BaseDAO<Author> {
+	
 	/**
+	 * @throws SQLException 
 	 * 
 	 */
-	public AuthorDAO() {
+	public AuthorDAO() throws SQLException {
+		super();
 	}
 	
-	public List<Author> getAuthors() throws SQLException {
-		Connection sqlConnection = DriverManager.getConnection(url, user, password);
-		return extractData(read(sqlConnection, new Table("tbl_author").select()));
+
+
+	@Override
+	public List<Author> get() throws SQLException {
+		return extractData(read(new Table("tbl_author").select()));
 	}
-	
+
+	@Override
+	public void post(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void put(Integer id, Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public List<Author> extractData(ResultSet results) throws SQLException {
 		List<Author> authors = new ArrayList<>();
 		while(results.next()) {
