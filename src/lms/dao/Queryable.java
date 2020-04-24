@@ -14,7 +14,7 @@ import java.util.List;
  * @param <T>
  *
  */
-public interface BaseDAO<T> {
+public interface Queryable<T> {
 	public default ResultSet read(Connection sqlConnection, String sqlQuery) throws SQLException {
 		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
 		ResultSet results = sqlStatement.executeQuery();

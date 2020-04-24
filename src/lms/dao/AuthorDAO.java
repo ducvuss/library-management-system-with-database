@@ -18,7 +18,7 @@ import lms.utils.Table;
  * @author ducba
  *
  */
-public class AuthorDAO implements BaseDAO<Author> {
+public class AuthorDAO implements Queryable<Author> {
 	public static final String url = "jdbc:mysql://localhost:3306/library?useSSL=false";
 	public static final String user = "root";
 	public static final String password = "test";
