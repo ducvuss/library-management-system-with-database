@@ -1,7 +1,7 @@
 /**
  * 
  */
-package lbs.entity;
+package lms.entity;
 
 /**
  * @author ducba
