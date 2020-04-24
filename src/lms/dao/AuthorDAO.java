@@ -17,24 +17,27 @@ import lms.utils.Table;
  */
 public class AuthorDAO extends BaseDAO<Author> {
 	
+	private String tableName;
+
 	/**
 	 * @throws SQLException 
 	 * 
 	 */
 	public AuthorDAO() throws SQLException {
 		super();
+		this.tableName = "tbl_author";
 	}
 	
 
 
 	@Override
 	public List<Author> get() throws SQLException {
-		return extractData(read(new Table("tbl_author").select()));
+		return extractData(read(new Table(tableName).select()));
 	}
 
 	@Override
-	public void post(Object object) {
-		// TODO Auto-generated method stub
+	public void post(Author author) throws SQLException {
+		save(new Table(tableName).insert("authorName"), new Object[] { author.getAuthorName() });
 		
 	}
 

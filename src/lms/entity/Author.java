@@ -11,6 +11,13 @@ public class Author {
 	private Integer authorId;
 	private String authorName;
 
+	public Author() {
+	}
+
+	public Author(String authorName) {
+		this.authorName = authorName;
+	}
+
 	public Integer getAuthorId() {
 		return authorId;
 	}
@@ -18,7 +25,7 @@ public class Author {
 	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
 	}
-	
+
 	public String getAuthorName() {
 		return authorName;
 	}
