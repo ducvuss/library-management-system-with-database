@@ -27,8 +27,8 @@ public class Table {
 	}
 
 	public String insert(String... columnNames) {
-		String columns = columnNames.length > 0 ? String.format(" (%s)", appendColumnName(columnNames)) : "";
-		return String.format("INSERT INTO %s%s VALUES (?)", tableName, columns);
+		String columns = columnNames.length > 0 ? String.format("%s (%s)", tableName, appendColumnName(columnNames)) : tableName;
+		return String.format("INSERT INTO %s VALUES (?)", columns);
 	}
 
 	/**
