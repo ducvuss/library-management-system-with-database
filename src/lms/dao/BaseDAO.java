@@ -45,9 +45,9 @@ public abstract class BaseDAO<T> implements Executable<T> {
 
 	public abstract void post(T object) throws SQLException;
 
-	public abstract void put(Integer id, Object object);
+	public abstract void put(Integer id, T object) throws SQLException;
 
-	public abstract void delete(Integer id);
+	public abstract void delete(Integer id) throws SQLException;
 
 	public abstract List<T> extractData(ResultSet results) throws SQLException;
 

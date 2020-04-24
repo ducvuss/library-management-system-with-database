@@ -38,19 +38,16 @@ public class AuthorDAO extends BaseDAO<Author> {
 	@Override
 	public void post(Author author) throws SQLException {
 		save(new Table(tableName).insert("authorName"), new Object[] { author.getAuthorName() });
-		
 	}
 
 	@Override
-	public void put(Integer id, Object object) {
-		// TODO Auto-generated method stub
-		
+	public void put(Integer authorId, Author author) throws SQLException {
+		save("UPDATE tbl_author SET authorName=? WHERE authorId=?", new Object[] { author.getAuthorName(), authorId });
 	}
 
 	@Override
-	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+	public void delete(Integer authorId) throws SQLException {
+		save("DELETE FROM tbl_author WHERE authorId=?", new Object[] { authorId });
 	}
 
 	@Override
