@@ -20,9 +20,13 @@ public interface Executable<T> {
 		return results;
 	}
 	
-	public default ResultSet write(Connection sqlConnection, String sqlQuery) throws SQLException {
+	public default void save(Connection sqlConnection, String sqlQuery, Object[] objects) throws SQLException {
 		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
-		ResultSet results = sqlStatement.executeQuery();
-		return results;
+		int index = 1;
+		for (Object object : objects) {
+			sqlStatement.setObject(index, object);
+			index++;
+		}
+		sqlStatement.executeUpdate();
 	}
 }

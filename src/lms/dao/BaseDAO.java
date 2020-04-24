@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import lms.utils.Table;
 
@@ -32,8 +33,13 @@ public abstract class BaseDAO<T> implements Executable<T> {
 	}
 
 	public ResultSet read(String sqlQuery) throws SQLException {
-		return read(sqlConnection, new Table("tbl_author").select());
+		return read(sqlConnection, sqlQuery);
 	}
+	
+	public void save(String sqlQuery, Object[] objects) throws SQLException {
+		save(sqlConnection, sqlQuery, objects);
+	}
+	
 
 	public abstract List<T> get() throws SQLException;
 
