@@ -28,6 +28,10 @@ public abstract class BaseDAO<T> implements Executable<T> {
 	public BaseDAO() throws SQLException {
 		this.sqlConnection = DriverManager.getConnection(url, user, password);
 	}
+	
+	public BaseDAO(Connection sqlConnection) {
+		this.sqlConnection = sqlConnection;
+	}
 
 	public ResultSet read(String sqlQuery) throws SQLException {
 		return read(sqlConnection, sqlQuery);
