@@ -31,6 +31,7 @@ public class App {
 		publisherDAO.get().forEach(x -> System.out.println(x.getPublisherId() + " " + x.getPublisherName()));
 
 		DbConnection dbConnection = new DbConnection();
+		System.out.println(dbConnection.getConnection().getSchema());
 	}
 
 }
