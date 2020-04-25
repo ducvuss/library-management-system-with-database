@@ -25,6 +25,10 @@ public class Table {
 		String columns = columnNames.length > 0 ? appendColumnName(columnNames) : "*";
 		return String.format("SELECT %s FROM %s", columns, tableName);
 	}
+	
+	public String selectOrdered(String columnName) {
+		return String.format("SELECT * FROM %s ORDER BY %s", tableName, columnName);
+	}
 
 	public String insert(String... columnNames) {
 		String columns = columnNames.length > 0 ? String.format("%s (%s)", tableName, appendColumnName(columnNames)) : tableName;

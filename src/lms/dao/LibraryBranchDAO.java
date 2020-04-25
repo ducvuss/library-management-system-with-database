@@ -66,8 +66,11 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 	}
 
 	public LibraryBranch get(Integer branchId) throws SQLException {
-		// TODO Auto-generated method stub
-		return extractData(read(new Table(tableName).selectWhere("branchId"), new Object[] { branchId })).get(0);
+		List<LibraryBranch> branches = extractData(read(new Table(tableName).selectWhere("branchId"), new Object[] { branchId }));
+		if (branches.isEmpty()) {
+			return null;
+		}
+		return branches.get(0);
 	}
 
 

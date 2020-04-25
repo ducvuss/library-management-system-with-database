@@ -1,7 +1,7 @@
 /**
  * 
  */
-package lms.utils.test;
+package lms.test.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
