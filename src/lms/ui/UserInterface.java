@@ -3,16 +3,11 @@
  */
 package lms.ui;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import lms.dao.LibraryBranchDAO;
 import lms.entity.LibraryBranch;
 import lms.service.LibrarianSerivce;
-import lms.utils.DbConnection;
 
 /**
  * @author ducba
@@ -21,7 +16,6 @@ import lms.utils.DbConnection;
 public class UserInterface {
 
 	private Scanner scanner;
-	private String state;
 	private LibrarianSerivce librarianService;
 	private boolean isRunning = false;
 
@@ -30,7 +24,6 @@ public class UserInterface {
 	 */
 	public UserInterface() {
 		this.scanner = new Scanner(System.in);
-		this.state = "Main";
 	}
 
 	public void run() {
@@ -40,6 +33,7 @@ public class UserInterface {
 					new String[] { "Quit", "Librarian", "Administrator", "Borrower" });
 			switch (option) {
 			case 0:
+				scanner.close();
 				System.out.println("app closed");
 				return;
 			case 1:
