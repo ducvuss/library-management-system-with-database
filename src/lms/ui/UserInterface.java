@@ -56,7 +56,7 @@ public class UserInterface {
 	private void runLibrarianMode(boolean isRunning) {
 		librarianService = new LibrarianSerivce();
 		while (isRunning) {
-			int option = renderView("Librarian Options:", new String[] { "Go back", "Enter Branch you manage",  });
+			int option = renderView("Librarian Options:", new String[] { "Go back", "Enter Branch you manage", });
 			switch (option) {
 			case 0:
 				return;
@@ -81,9 +81,59 @@ public class UserInterface {
 					System.out.println("branch not found - try again");
 					break;
 				}
-				System.out.println("good");
+				runBranchMode(branch);
+//				runBranchEditMode(branch);
 				break;
 			}
+		}
+	}
+
+	private void runBranchMode(LibraryBranch branch) {
+		while (isRunning) {
+			int option = renderView("Current Record: " + branch.toRowString(), new String[] { "Go back", "Update branch details.", "Add copies of book." });
+			switch (option) {
+			case 0:
+				return;
+			case 1:
+				runBranchEditMode(branch);
+				break;
+			}
+		}
+	}
+
+	private void runBranchEditMode(LibraryBranch branch) {
+		System.out.println("You are editting " + branch.toRowString());
+		System.out.println("Enter 'quit' at any prompt to cancel the operation.");
+		System.out.println("Enter 'n/a' for no change.");
+		System.out.print("New Branch Name: ");
+		scanner = new Scanner(System.in);
+		String branchName = scanner.nextLine();
+		switch (branchName) {
+		case "quit":
+			return;
+		case "n/a":
+			break;
+		default:
+			branch.setBranchName(branchName);
+		}
+		System.out.print("\nNew Branch Address: ");
+		scanner = new Scanner(System.in);
+		String branchAddress = scanner.nextLine();
+		switch (branchAddress) {
+		case "quit":
+			return;
+		case "n/a":
+			break;
+		default:
+			branch.setBranchAddress(branchAddress);
+			System.out.println("successfully update information of this library branch");
+		}
+		try {
+			librarianService.update(branch);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("failed to update information of this library branch");
 		}
 	}
 
@@ -102,7 +152,7 @@ public class UserInterface {
 		System.out.println("0 - Go Back");
 		System.out.print("Your selection: ");
 		scanner = new Scanner(System.in);
-		while(scanner.hasNext()) {
+		while (scanner.hasNext()) {
 			if (scanner.hasNextInt()) {
 				return scanner.nextInt();
 			}
@@ -110,27 +160,6 @@ public class UserInterface {
 			scanner = new Scanner(System.in);
 		}
 		return -1;
-	}
-
-	private Integer handleBranchesInput() {
-		while (true) {
-			Integer input = scanner.nextInt();
-			if (input == 0) {
-				this.state = "Librarian";
-				return null;
-			} else {
-				getBranchMenu(input);
-			}
-		}
-	}
-
-	private void getBranchMenu(Integer input) {
-		LibraryBranch branch = librarianService.getBranchById(input);
-		if (branch == null) {
-			this.state = "Branches";
-			return;
-		}
-		display("", new String[] { "Update the details", "Add copies of Book", "Go back" });
 	}
 
 	private void display(String title, String[] options) {

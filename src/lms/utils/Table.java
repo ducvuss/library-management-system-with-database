@@ -29,6 +29,11 @@ public class Table {
 	public String selectOrdered(String columnName) {
 		return String.format("SELECT * FROM %s ORDER BY %s", tableName, columnName);
 	}
+	
+	public String updateRowById(String... columnNames) {
+		String columns = Stream.of(columnNames).map(str -> str+"=(?)").reduce("", writeColumnNames());
+		return String.format("", tableName, columns);
+	}
 
 	public String insert(String... columnNames) {
 		String columns = columnNames.length > 0 ? String.format("%s (%s)", tableName, appendColumnName(columnNames)) : tableName;

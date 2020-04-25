@@ -41,9 +41,9 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 	}
 
 	@Override
-	public void put(Integer id, LibraryBranch object) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public void put(Integer branchId, LibraryBranch branch) throws SQLException {
+		save("UPDATE tbl_library_branch set branchName=(?), branchAddress=(?) where branchId=(?)",
+				new Object[] { branch.getBranchName(), branch.getBranchAddress(), branchId });
 	}
 
 	@Override
@@ -66,12 +66,12 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 	}
 
 	public LibraryBranch get(Integer branchId) throws SQLException {
-		List<LibraryBranch> branches = extractData(read(new Table(tableName).selectWhere("branchId"), new Object[] { branchId }));
+		List<LibraryBranch> branches = extractData(
+				read(new Table(tableName).selectWhere("branchId"), new Object[] { branchId }));
 		if (branches.isEmpty()) {
 			return null;
 		}
 		return branches.get(0);
 	}
-
 
 }

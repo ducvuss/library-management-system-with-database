@@ -17,7 +17,7 @@ import lms.utils.DbConnection;
  *
  */
 public class LibrarianSerivce {
-
+	DbConnection dbConnection = new DbConnection();
 	/**
 	 * 
 	 */
@@ -27,12 +27,11 @@ public class LibrarianSerivce {
 
 	public List<String> getBranches() {
 		List<String> branches = new ArrayList<String>();
-		try (Connection sqlConnection = new DbConnection().getConnection()) {
+		try (Connection sqlConnection = dbConnection.getConnection()) {
 			LibraryBranchDAO branchDAO = new LibraryBranchDAO(sqlConnection);
 
 			branchDAO.get().forEach(branch -> {
-				branches.add(String.format("%d - %s - %s", branch.getBranchId(), branch.getBranchName(),
-						branch.getBranchAddress()));
+				branches.add(branch.toRowString());
 			});
 
 		} catch (SQLException e) {
@@ -44,12 +43,27 @@ public class LibrarianSerivce {
 
 	public LibraryBranch getBranchById(Integer branchId) {
 		LibraryBranch branch = null;
-		try (Connection sqlConnection = new DbConnection().getConnection()) {
+		try (Connection sqlConnection = dbConnection.getConnection()) {
 			LibraryBranchDAO branchDAO = new LibraryBranchDAO(sqlConnection);
 			branch = branchDAO.get(branchId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return branch;
+	}
+
+	public void update(LibraryBranch branch) throws SQLException {
+		Connection sqlConnection = null;
+		try {
+			sqlConnection = dbConnection.getConnection();
+			LibraryBranchDAO branchDAO = new LibraryBranchDAO(sqlConnection);
+			branchDAO.put(branch.getBranchId(), branch);
+			sqlConnection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlConnection.rollback();
+		} finally {
+			sqlConnection.close();
+		}
 	}
 }

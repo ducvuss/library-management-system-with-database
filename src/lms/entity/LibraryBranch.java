@@ -53,4 +53,7 @@ public class LibraryBranch {
 		this.branchAddress = branchAddress;
 	}
 
+	public String toRowString() {
+		return String.format("%d - %s - %s", branchId, branchName, branchAddress);
+	}
 }
