@@ -26,7 +26,7 @@ public class DbConnection {
 		this.props = new Properties();
 		try (InputStream inStream = new FileInputStream("resources/config/lms.properties")) {
 			props.load(inStream);
-			System.out.println("loaded property for user: " + props.getProperty("user"));
+//			System.out.println("loaded property for user: " + props.getProperty("user"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

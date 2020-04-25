@@ -3,9 +3,14 @@
  */
 package lms.ui;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import lms.dao.LibraryBranchDAO;
+import lms.utils.DbConnection;
 
 /**
  * @author ducba
@@ -30,7 +35,7 @@ public class UserInterface {
 		}
 	}
 
-	public void getScreenByState() {
+	private void getScreenByState() {
 //		System.out.println(state);
 		switch (state) {
 		case "Main":
@@ -46,12 +51,31 @@ public class UserInterface {
 
 	}
 
+	private void getBranchesMenu() {
+		try (Connection sqlConnection = new DbConnection().getConnection()) {
+			LibraryBranchDAO branchDAO = new LibraryBranchDAO(sqlConnection);
+
+			branchDAO.get().stream().forEach(branch -> {
+				System.out.println(String.format("%d - %s - %s", branch.getBranchId(), branch.getBranchName(),
+						branch.getBranchAddress()));
+			});
+		} catch (SQLException e) {
+			System.out.println("can't connect to the database");
+			e.printStackTrace();
+		}
+		
+		System.out.println("0 - Go Back");
+		System.out.print("Your selection: ");
+	}
+
 	private void handleLibrarianInput() {
 		while (true) {
 			Integer input = scanner.nextInt();
 			switch (input) {
 			case 1:
 				this.state = "Branches";
+				getBranchesMenu();
+				handleBranchesSelection();
 				return;
 			case 2:
 				this.state = "Main";
@@ -60,7 +84,17 @@ public class UserInterface {
 		}
 	}
 
-	public void display(String title, String[] options) {
+	private void handleBranchesSelection() {
+		while (true) {
+			Integer input = scanner.nextInt();
+			if (input == 0) {
+				this.state = "Librarian";
+				return;
+			}
+		}
+	}
+
+	private void display(String title, String[] options) {
 		System.out.println("");
 		System.out.println(title);
 		IntStream.range(0, options.length).forEach(index -> {
@@ -69,7 +103,7 @@ public class UserInterface {
 		System.out.print("Your number: ");
 	}
 
-	public void switchStateFromMain() {
+	private void switchStateFromMain() {
 		while (true) {
 			Integer input = scanner.nextInt();
 			switch (input) {
