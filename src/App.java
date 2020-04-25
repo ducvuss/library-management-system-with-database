@@ -7,6 +7,7 @@ import lms.dao.PublisherDAO;
 import lms.entity.Author;
 import lms.entity.Book;
 import lms.entity.Publisher;
+import lms.utils.DbConnection;
 
 public class App {
 
@@ -29,6 +30,7 @@ public class App {
 		publisherDAO.delete(21);
 		publisherDAO.get().forEach(x -> System.out.println(x.getPublisherId() + " " + x.getPublisherName()));
 
+		DbConnection dbConnection = new DbConnection();
 	}
 
 }
