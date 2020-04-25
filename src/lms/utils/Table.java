@@ -55,4 +55,8 @@ public class Table {
 		};
 	}
 
+	public String selectWhere(String columnName) {
+		return String.format("SELECT * FROM %s WHERE %s=(?)", tableName, columnName);
+	}
+
 }

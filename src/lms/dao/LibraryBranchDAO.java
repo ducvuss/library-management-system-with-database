@@ -16,7 +16,7 @@ import lms.utils.Table;
  * @author ducba
  *
  */
-public class LibraryBranchDAO extends BaseDAO<LibraryBranch>{
+public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 
 	private String tableName;
 
@@ -37,25 +37,25 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch>{
 	@Override
 	public void post(LibraryBranch object) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void put(Integer id, LibraryBranch object) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete(Integer id) throws SQLException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public List<LibraryBranch> extractData(ResultSet results) throws SQLException {
 		List<LibraryBranch> branches = new ArrayList<LibraryBranch>();
-		while(results.next()) {
+		while (results.next()) {
 			LibraryBranch branch = new LibraryBranch();
 			branch.setBranchId(results.getInt("branchId"));
 			branch.setBranchName(results.getString("branchName"));
@@ -64,5 +64,11 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch>{
 		}
 		return branches;
 	}
+
+	public LibraryBranch get(Integer branchId) throws SQLException {
+		// TODO Auto-generated method stub
+		return extractData(read(new Table(tableName).selectWhere("branchId"), new Object[] { branchId })).get(0);
+	}
+
 
 }

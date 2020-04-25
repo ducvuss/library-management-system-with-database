@@ -14,13 +14,24 @@ import java.sql.SQLException;
  *
  */
 public interface Executable<T> {
-	public default ResultSet read(Connection sqlConnection, String sqlQuery) throws SQLException {
+	default ResultSet read(Connection sqlConnection, String sqlQuery) throws SQLException {
 		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
 		ResultSet results = sqlStatement.executeQuery();
 		return results;
 	}
 	
-	public default void save(Connection sqlConnection, String sqlQuery, Object[] objects) throws SQLException {
+	default ResultSet read(Connection sqlConnection, String sqlQuery, Object[] objects) throws SQLException {
+		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
+		int index = 1;
+		for (Object object : objects) {
+			sqlStatement.setObject(index, object);
+			index++;
+		}
+		ResultSet results = sqlStatement.executeQuery();
+		return results;
+	}
+	
+	default void save(Connection sqlConnection, String sqlQuery, Object[] objects) throws SQLException {
 		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
 		int index = 1;
 		for (Object object : objects) {

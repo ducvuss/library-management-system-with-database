@@ -33,14 +33,17 @@ public abstract class BaseDAO<T> implements Executable<T> {
 		this.sqlConnection = sqlConnection;
 	}
 
-	public ResultSet read(String sqlQuery) throws SQLException {
+	protected ResultSet read(String sqlQuery) throws SQLException {
 		return read(sqlConnection, sqlQuery);
 	}
 	
-	public void save(String sqlQuery, Object[] objects) throws SQLException {
+	protected void save(String sqlQuery, Object[] objects) throws SQLException {
 		save(sqlConnection, sqlQuery, objects);
 	}
-	
+
+	protected ResultSet read(String sqlQuery, Object[] objects) throws SQLException {
+		return read(sqlConnection, sqlQuery, objects);
+	}
 
 	public abstract List<T> get() throws SQLException;
 

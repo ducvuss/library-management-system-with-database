@@ -10,6 +10,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import lms.dao.LibraryBranchDAO;
+import lms.entity.LibraryBranch;
+import lms.service.LibrarianSerivce;
 import lms.utils.DbConnection;
 
 /**
@@ -20,6 +22,7 @@ public class UserInterface {
 
 	private Scanner scanner;
 	private String state;
+	private LibrarianSerivce librarianService;
 
 	/**
 	 * 
@@ -31,41 +34,31 @@ public class UserInterface {
 
 	public void run() {
 		while (state != null) {
-			getScreenByState();
+			getRouteByState();
 		}
 	}
 
-	private void getScreenByState() {
-//		System.out.println(state);
+	private void getRouteByState() {
 		switch (state) {
 		case "Main":
-			display("Welcome to LMS, select a number that corresponds to your current role?",
-					new String[] { "Librarian", "Administrator", "Borrower" });
-			switchStateFromMain();
+			getMainView();
 			break;
 		case "Librarian":
-			display("Librarian Options:", new String[] { "Enter Branch you manage", "Go back" });
-			handleLibrarianInput();
+			getLibrarianView();
 			break;
 		}
 
 	}
 
-	private void getBranchesMenu() {
-		try (Connection sqlConnection = new DbConnection().getConnection()) {
-			LibraryBranchDAO branchDAO = new LibraryBranchDAO(sqlConnection);
+	private void getLibrarianView() {
+		display("Librarian Options:", new String[] { "Enter Branch you manage", "Go back" });
+		handleLibrarianInput();
+	}
 
-			branchDAO.get().stream().forEach(branch -> {
-				System.out.println(String.format("%d - %s - %s", branch.getBranchId(), branch.getBranchName(),
-						branch.getBranchAddress()));
-			});
-		} catch (SQLException e) {
-			System.out.println("can't connect to the database");
-			e.printStackTrace();
-		}
-		
-		System.out.println("0 - Go Back");
-		System.out.print("Your selection: ");
+	private void getMainView() {
+		display("Welcome to LMS, select a number that corresponds to your current role?",
+				new String[] { "Librarian", "Administrator", "Borrower" });
+		handleMainInput();
 	}
 
 	private void handleLibrarianInput() {
@@ -74,8 +67,8 @@ public class UserInterface {
 			switch (input) {
 			case 1:
 				this.state = "Branches";
-				getBranchesMenu();
-				handleBranchesSelection();
+				getBranchesView();
+				handleBranchesInput();
 				return;
 			case 2:
 				this.state = "Main";
@@ -84,14 +77,29 @@ public class UserInterface {
 		}
 	}
 
-	private void handleBranchesSelection() {
+	private void getBranchesView() {
+		this.librarianService = new LibrarianSerivce();
+		librarianService.getBranches().forEach(System.out::println);
+		System.out.println("0 - Go Back");
+		System.out.print("Your selection: ");
+	}
+
+	private Integer handleBranchesInput() {
 		while (true) {
 			Integer input = scanner.nextInt();
 			if (input == 0) {
 				this.state = "Librarian";
-				return;
+				return null;
+			}
+			else {
+				getBranchMenu(input);
 			}
 		}
+	}
+
+	private void getBranchMenu(Integer input) {
+		LibraryBranch branch = librarianService.getBranchById(input);
+		display("", new String[] { "Update the details", "Add copies of Book", "Go back"});
 	}
 
 	private void display(String title, String[] options) {
@@ -103,7 +111,7 @@ public class UserInterface {
 		System.out.print("Your number: ");
 	}
 
-	private void switchStateFromMain() {
+	private void handleMainInput() {
 		while (true) {
 			Integer input = scanner.nextInt();
 			switch (input) {
