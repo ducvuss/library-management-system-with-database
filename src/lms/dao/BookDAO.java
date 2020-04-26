@@ -3,6 +3,7 @@
  */
 package lms.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class BookDAO extends BaseDAO<Book> {
 	 */
 	public BookDAO() throws SQLException {
 		super();
+		this.tableName = "tbl_book";
+	}
+
+	public BookDAO(Connection sqlConnection) {
+		super(sqlConnection);
 		this.tableName = "tbl_book";
 	}
 
@@ -60,4 +66,12 @@ public class BookDAO extends BaseDAO<Book> {
 		return books;
 	}
 
+	public List<Book> getByBranchId(Integer branchId) throws SQLException {
+		return extractData(read(new Table(tableName).select() + " WHERE pubId=(?)", new Object[] { branchId }));
+	}
+
+//	public void getAuthors(Integer bookId) throws SQLException {
+//		read("SELECT * FROM tbl_book_authors ba WHERE bookId=(?) JOIN tbl_authors a ON ba.authorId = a.authorId",
+//				new Object[] { bookId });
+//	}
 }

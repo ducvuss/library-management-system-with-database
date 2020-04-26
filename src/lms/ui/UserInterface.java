@@ -75,24 +75,41 @@ public class UserInterface {
 					System.out.println("branch not found - try again");
 					break;
 				}
-				runBranchMode(branch);
+				runBranchMode(branch.getBranchId());
 //				runBranchEditMode(branch);
 				break;
 			}
 		}
 	}
 
-	private void runBranchMode(LibraryBranch branch) {
+	private void runBranchMode(Integer branchId) {
 		while (isRunning) {
-			int option = renderView("Current Record: " + branch.toRowString(), new String[] { "Go back", "Update branch details.", "Add copies of book." });
+			LibraryBranch branch = librarianService.getBranchById(branchId);
+			int option = renderView("Current Record: " + branch.toRowString(),
+					new String[] { "Go back", "Update branch details.", "Add copies of book." });
 			switch (option) {
 			case 0:
 				return;
 			case 1:
 				runBranchEditMode(branch);
 				break;
+			case 2:
+				runBookCopiesMode(branch);
+				break;
 			}
 		}
+	}
+
+	private void runBookCopiesMode(LibraryBranch branch) {
+		System.out.println("Select the book you want to add copies");
+		librarianService.getBooksByBranchId(branch.getBranchId()).forEach(System.out::println);
+		System.out.println("Current number of copies: ");
+		System.out.print("New number of copies: ");
+		while (!scanner.hasNextInt()) {
+			System.out.println("invalid input - try again");
+			scanner = new Scanner(System.in);
+		}
+		System.out.println(scanner.nextInt());
 	}
 
 	private void runBranchEditMode(LibraryBranch branch) {
@@ -102,30 +119,34 @@ public class UserInterface {
 		System.out.print("New Branch Name: ");
 		scanner = new Scanner(System.in);
 		String branchName = scanner.nextLine();
-		switch (branchName) {
+		switch (branchName.trim()) {
 		case "quit":
 			return;
 		case "n/a":
+			break;
+		case "":
 			break;
 		default:
 			branch.setBranchName(branchName);
 		}
+
 		System.out.print("\nNew Branch Address: ");
 		scanner = new Scanner(System.in);
 		String branchAddress = scanner.nextLine();
-		switch (branchAddress) {
+		switch (branchAddress.trim()) {
 		case "quit":
 			return;
 		case "n/a":
 			break;
+		case "":
+			break;
 		default:
 			branch.setBranchAddress(branchAddress);
-			System.out.println("successfully update information of this library branch");
 		}
 		try {
 			librarianService.update(branch);
+			System.out.println("successfully update information of this library branch");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("failed to update information of this library branch");
 		}
