@@ -22,6 +22,7 @@ public class UserInterface {
 	private BorrowerService borrowerService;
 	private boolean isRunning = false;
 	private GeneralService generalService = new GeneralService();
+	private Integer cardNo;
 
 	/**
 	 * 
@@ -46,14 +47,16 @@ public class UserInterface {
 			case 2:
 				break;
 			case 3:
-				getCardNumber();
-				runBorrowerMode(isRunning);
+				if (validateBorrower()) {
+					runBorrowerMode(isRunning);
+				}
 				break;
 			}
 		}
 	}
 
 	private void runBorrowerMode(boolean isRunning) {
+		System.out.println("");
 		borrowerService = new BorrowerService();
 		while (isRunning) {
 			int option = renderView("Borrower Options:",
@@ -72,17 +75,28 @@ public class UserInterface {
 		}
 	}
 
-	private void getCardNumber() {
-		System.out.println("Enter your Card Number: ");
+	private boolean validateBorrower() {
+		System.out.println("Enter 0 to go back");
+		System.out.print("Enter your Card Number: ");
 		
 		while(scanner.hasNextLine()) {
 			scanner = new Scanner(System.in);
 			while(scanner.hasNextInt()) {
-				System.out.println("test");
-				generalService.validateCardNo(scanner.nextInt());
+				Integer input = scanner.nextInt();
+				if (input == 0) {
+					return false;
+				}
+				this.cardNo = generalService.validateCardNo(input);
+				if (cardNo != null) {
+					System.out.print("successfully validation");
+					return true;
+				}
+				System.out.println("validation failed - try again");
+				
 			}
 			System.out.println("invalid input - try again");
 		}
+		return false;
 	}
 
 	private void runModeByRole(boolean isRunning, String role, String optionName) {
@@ -205,18 +219,6 @@ public class UserInterface {
 		}
 		
 		System.out.println("this book is not available for checkouts");
-//		System.out.println("Current number of copies: " + noOfCopies);
-//		System.out.print("New number of copies: ");
-//		while (!scanner.hasNextInt()) {
-//			System.out.println("invalid input - try again");
-//			scanner = new Scanner(System.in);
-//		}
-//		try {
-//			librarianService.setBookCopiesByBranch(bookId, branch.getBranchId(), scanner.nextInt());
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 
 	private void runBranchMode(Integer branchId) {

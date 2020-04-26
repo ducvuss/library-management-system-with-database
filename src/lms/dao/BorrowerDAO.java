@@ -36,8 +36,9 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 
 	public Borrower getByCardNo(Integer cardNo) throws SQLException {
 
-		List<Borrower> borrowers = extractData(read(new Table(tableName).selectWhere("cardNo")));
-		
+		List<Borrower> borrowers = extractData(
+				read(new Table(tableName).selectWhere("cardNo"), new Object[] { cardNo }));
+
 		return borrowers.size() > 0 ? borrowers.get(0) : null;
 	}
 
@@ -65,7 +66,7 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 		while (results.next()) {
 			Borrower borrower = new Borrower();
 			borrower.setAddress(results.getString("address"));
-			borrower.setName(results.getString("borrowerAddress"));
+			borrower.setName(results.getString("name"));
 			borrower.setPhone(results.getString("phone"));
 			borrower.setCardNo(results.getInt("cardNo"));
 			borrowers.add(borrower);
