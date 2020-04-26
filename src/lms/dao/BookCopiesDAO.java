@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import lms.entity.Book;
 import lms.entity.BookCopies;
 import lms.utils.Table;
 
