@@ -42,6 +42,7 @@ public abstract class BaseDAO<T> implements Executable<T> {
 	}
 
 	protected ResultSet read(String sqlQuery, Object[] objects) throws SQLException {
+//		System.out.println(sqlQuery);
 		return read(sqlConnection, sqlQuery, objects);
 	}
 

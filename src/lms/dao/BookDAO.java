@@ -57,6 +57,7 @@ public class BookDAO extends BaseDAO<Book> {
 	@Override
 	public List<Book> extractData(ResultSet results) throws SQLException {
 		List<Book> books = new ArrayList<>();
+		
 		while (results.next()) {
 			Book book = new Book();
 			book.setTitle(results.getString("title"));
@@ -68,6 +69,10 @@ public class BookDAO extends BaseDAO<Book> {
 
 	public List<Book> getByBranchId(Integer branchId) throws SQLException {
 		return extractData(read(new Table(tableName).select() + " WHERE pubId=(?)", new Object[] { branchId }));
+	}
+
+	public ResultSet execute(String sqlQuery, Object[] objects) throws SQLException {
+		return read(sqlQuery, objects);
 	}
 
 //	public void getAuthors(Integer bookId) throws SQLException {

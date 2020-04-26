@@ -76,7 +76,6 @@ public class UserInterface {
 					break;
 				}
 				runBranchMode(branch.getBranchId());
-//				runBranchEditMode(branch);
 				break;
 			}
 		}
@@ -101,18 +100,47 @@ public class UserInterface {
 	}
 
 	private void runBookCopiesMode(LibraryBranch branch) {
+		System.out.println("");
+		System.out.println("0 - Go back");
 		System.out.println("Select the book you want to add copies");
 		librarianService.getBooksByBranchId(branch.getBranchId()).forEach(System.out::println);
-		System.out.println("Current number of copies: ");
+		System.out.print("Your selection: ");
+		while (!scanner.hasNextInt()) {
+			System.out.println("invalid input - try again");
+			scanner = new Scanner(System.in);
+		}
+		Integer bookId = null;
+		Integer noOfCopies = null;
+		while (scanner.hasNextInt()) {
+			bookId = scanner.nextInt();
+			if (bookId == 0) {
+				return;
+			} else {
+				noOfCopies = librarianService.getBookCopiesByBranch(bookId, branch.getBranchId());
+				if (noOfCopies != null) {
+					break;
+				}
+				System.out.println("book not found - please try again");
+				return;
+			}
+		}
+
+		System.out.println("Current number of copies: " + noOfCopies);
 		System.out.print("New number of copies: ");
 		while (!scanner.hasNextInt()) {
 			System.out.println("invalid input - try again");
 			scanner = new Scanner(System.in);
 		}
-		System.out.println(scanner.nextInt());
+		try {
+			librarianService.setBookCopiesByBranch(bookId, branch.getBranchId(), scanner.nextInt());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void runBranchEditMode(LibraryBranch branch) {
+		System.out.println("");
 		System.out.println("You are editting " + branch.toRowString());
 		System.out.println("Enter 'quit' at any prompt to cancel the operation.");
 		System.out.println("Enter 'n/a' for no change.");
