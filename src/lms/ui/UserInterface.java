@@ -47,6 +47,8 @@ public class UserInterface {
 				runLibrarianMode(isRunning);
 				break;
 			case 2:
+				AdministratorMode administratorMode = new AdministratorMode(scanner);
+				administratorMode.runAdministratorMode(isRunning);
 				break;
 			case 3:
 				if (validateBorrower()) {

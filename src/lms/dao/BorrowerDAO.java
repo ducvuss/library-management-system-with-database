@@ -31,7 +31,7 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 
 	@Override
 	public List<Borrower> get() throws SQLException {
-		return null;
+		return extractData(read("SELECT * FROM tbl_borrower"));
 	}
 
 	public Borrower getByCardNo(Integer cardNo) throws SQLException {
@@ -44,19 +44,19 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 
 	@Override
 	public void post(Borrower object) throws SQLException {
-		// TODO Auto-generated method stub
-
+		save("INSERT INTO tbl_borrower VALUES()",
+				new Object[] { object.getCardNo(), object.getName(), object.getAddress(), object.getPhone() });
 	}
 
 	@Override
 	public void put(Integer id, Borrower object) throws SQLException {
-		// TODO Auto-generated method stub
-
+		save("UPDATE tbl_borrower SET cardNo=?, name=?, address=?, phone=? WHERE cardNo=?",
+				new Object[] { object.getCardNo(), object.getName(), object.getAddress(), object.getPhone(), id });
 	}
 
 	@Override
 	public void delete(Integer id) throws SQLException {
-		// TODO Auto-generated method stub
+		save("DELETE FROM tbl_borrower where cardNo=?", new Object[] { id });
 
 	}
 

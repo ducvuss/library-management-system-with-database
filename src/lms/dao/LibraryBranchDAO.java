@@ -36,8 +36,8 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 
 	@Override
 	public void post(LibraryBranch object) throws SQLException {
-		// TODO Auto-generated method stub
-
+		save("INSERT tbl_library_branch (branchName, branchAddress) VALUES (?, ?)",
+				new Object[] { object.getBranchName(), object.getBranchAddress() });
 	}
 
 	@Override
@@ -48,8 +48,7 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 
 	@Override
 	public void delete(Integer id) throws SQLException {
-		// TODO Auto-generated method stub
-
+		save("DELETE FROM tbl_library_branch WHERE branchId=?", new Object[] { id });
 	}
 
 	@Override
