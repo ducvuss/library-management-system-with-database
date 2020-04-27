@@ -67,11 +67,12 @@ public class UserInterface {
 			case 0:
 				return;
 			case 1:
-				runModeByRole(isRunning, "Borrower", "Enter Branch you want to check out from");
+				runModeByRole(isRunning, "Borrower", "Enter Branch you want to check out from", true);
 				System.out.println("checkout");
 				break;
 			case 2:
 				System.out.println("return");
+				runModeByRole(isRunning, "Borrower", "Enter Branch you want to return books", false);
 				break;
 			}
 		}
@@ -80,10 +81,10 @@ public class UserInterface {
 	private boolean validateBorrower() {
 		System.out.println("Enter 0 to go back");
 		System.out.print("Enter your Card Number: ");
-		
-		while(scanner.hasNextLine()) {
+
+		while (scanner.hasNextLine()) {
 			scanner = new Scanner(System.in);
-			while(scanner.hasNextInt()) {
+			while (scanner.hasNextInt()) {
 				Integer input = scanner.nextInt();
 				if (input == 0) {
 					return false;
@@ -94,14 +95,14 @@ public class UserInterface {
 					return true;
 				}
 				System.out.println("validation failed - try again");
-				
+
 			}
 			System.out.println("invalid input - try again");
 		}
 		return false;
 	}
 
-	private void runModeByRole(boolean isRunning, String role, String optionName) {
+	private void runModeByRole(boolean isRunning, String role, String optionName, boolean checkoutMode) {
 		borrowerService = new BorrowerService();
 		while (isRunning) {
 			int option = renderView(role + " Options:", new String[] { "Go back", optionName });
@@ -109,7 +110,7 @@ public class UserInterface {
 			case 0:
 				return;
 			case 1:
-				runBranchesModeBorrowr(isRunning);
+				runBranchesModeBorrower(isRunning, checkoutMode);
 				break;
 			}
 		}
@@ -129,7 +130,7 @@ public class UserInterface {
 		}
 	}
 
-	private void runBranchesModeBorrowr(boolean isRunning) {
+	private void runBranchesModeBorrower(boolean isRunning, boolean checkoutMode) {
 		while (isRunning) {
 			int option = renderBranchesView();
 			switch (option) {
@@ -143,13 +144,18 @@ public class UserInterface {
 					System.out.println("branch not found - try again");
 					break;
 				}
-				runSubModeByRole(branch.getBranchId(), 
-						new String[] { "Go back", "Pick the Book you want to checkout" });
+				if (checkoutMode) {
+					runSubModeByRole(branch.getBranchId(),
+							new String[] { "Go back", "select the Book you want to check out" }, checkoutMode);
+				} else {
+					runSubModeByRole(branch.getBranchId(),
+							new String[] { "Go back", "select the Book you want to check in" }, checkoutMode);
+				}
 				break;
 			}
 		}
 	}
-	
+
 	private void runBranchesMode(boolean isRunning) {
 		while (isRunning) {
 			int option = renderBranchesView();
@@ -170,7 +176,7 @@ public class UserInterface {
 		}
 	}
 
-	private void runSubModeByRole(Integer branchId, String[] strings) {
+	private void runSubModeByRole(Integer branchId, String[] strings, boolean checkoutMode) {
 		while (isRunning) {
 			LibraryBranch branch = generalService.getBranchById(branchId);
 			int option = renderView("Current Record: " + branch.toRowString(), strings);
@@ -178,16 +184,16 @@ public class UserInterface {
 			case 0:
 				return;
 			case 1:
-				runBookMode(branch);
+				runBookMode(branch, checkoutMode);
 				break;
 			}
 		}
 	}
 
-	private void runBookMode(LibraryBranch branch) {
+	private void runBookMode(LibraryBranch branch, boolean checkoutMode) {
 		System.out.println("");
 		System.out.println("0 - Go back");
-		System.out.println("Select the book you want to checkout");
+		System.out.println(checkoutMode ? "Select the book you want to checkout" : "Select the book you want to return");
 		borrowerService.getAvailableBooksByBranch(branch.getBranchId()).forEach(System.out::println);
 		System.out.print("Your selection: ");
 		while (!scanner.hasNextInt()) {
@@ -203,28 +209,47 @@ public class UserInterface {
 			} else {
 				noOfCopies = generalService.getBookCopiesByBranch(bookId, branch.getBranchId());
 				if (noOfCopies != null) {
+					try {
+						BookLoan bookLoan =	borrowerService.getBookLoan(bookId, branch.getBranchId(), cardNo);
+						if (bookLoan != null && checkoutMode) {
+							System.out.println("You aleady checked out this book and haven't returned it");
+							return;
+						}
+						
+						if (bookLoan == null && !checkoutMode ) {
+							System.out.println("You haven't checked out this book");
+							return;
+						}
+					} catch (SQLException e) {
+						return;
+					}
 					break;
 				}
+
+				
 				System.out.println("book not found - please try again");
 				return;
 			}
 		}
-		
+
+		BookLoan loan = new BookLoan();
+		loan.setBookId(bookId);
+		loan.setBranchId(branch.getBranchId());
+		loan.setCardNo(cardNo);
 		if (noOfCopies > 0) {
 			System.out.println(noOfCopies);
 			try {
-				BookLoan loan = new BookLoan();
-				loan.setBookId(bookId);
-				loan.setBranchId(branch.getBranchId());
-				loan.setCardNo(cardNo);
-				borrowerService.checkOutBook(bookId, branch.getBranchId(), noOfCopies, loan);
+				if (checkoutMode) {
+					borrowerService.checkOutBook(bookId, branch.getBranchId(), noOfCopies, loan);
+				} else {
+					borrowerService.checkInBook(bookId, branch.getBranchId(), noOfCopies, loan);
+				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println("successfully checked out");
+
+		System.out.println("successfully updated");
 	}
 
 	private void runBranchMode(Integer branchId) {

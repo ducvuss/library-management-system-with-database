@@ -78,7 +78,36 @@ public class BorrowerService {
 		} finally {
 			sqlConnection.close();
 		}
+	}
 
+	public BookLoan getBookLoan(Integer bookId, Integer branchId, Integer cardNo) throws SQLException {
+		try (Connection sqlConnection = dbConnection.getConnection()) {
+			BookLoansDAO bookLoansDAO = new BookLoansDAO(sqlConnection);
+			return bookLoansDAO.get(bookId, branchId, cardNo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void checkInBook(Integer bookId, Integer branchId, Integer noOfCopies, BookLoan loan) throws SQLException {
+		Connection sqlConnection = null;
+		try {
+			sqlConnection = dbConnection.getConnection();
+			BookCopiesDAO bookCopiesDAO = new BookCopiesDAO(sqlConnection);
+			bookCopiesDAO.put(bookId, branchId, noOfCopies + 1);
+			BookLoansDAO bookLoansDAO = new BookLoansDAO(sqlConnection);
+			bookLoansDAO.put(loan);
+			sqlConnection.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			sqlConnection.rollback();
+		} finally {
+			sqlConnection.close();
+		}
+		// TODO Auto-generated method stub
+		
 	}
 
 }
