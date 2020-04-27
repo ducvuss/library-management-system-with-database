@@ -34,6 +34,10 @@ public abstract class BaseDAO<T> implements Executable<T> {
 		this.sqlConnection = sqlConnection;
 	}
 
+	protected ResultSet read() throws SQLException {
+		return read(sqlConnection, "SELECT * FROM " + tableName);
+	}
+	
 	protected ResultSet read(String sqlQuery) throws SQLException {
 		return read(sqlConnection, sqlQuery);
 	}
