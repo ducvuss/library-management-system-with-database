@@ -8,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import lms.entity.BookGenres;
+import lms.entity.BookGenre;
 
 /**
  * @author ducba
  *
  */
-public class BookGenresDAO extends BaseDAO<BookGenres> {
+public class BookGenresDAO extends BaseDAO<BookGenre> {
 
 	/**
 	 * 
@@ -24,19 +24,19 @@ public class BookGenresDAO extends BaseDAO<BookGenres> {
 	}
 
 	@Override
-	public List<BookGenres> get() throws SQLException {
+	public List<BookGenre> get() throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void post(BookGenres object) throws SQLException {
+	public void post(BookGenre object) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void put(Integer id, BookGenres object) throws SQLException {
+	public void put(Integer id, BookGenre object) throws SQLException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -48,7 +48,7 @@ public class BookGenresDAO extends BaseDAO<BookGenres> {
 	}
 
 	@Override
-	public List<BookGenres> extractData(ResultSet results) throws SQLException {
+	public List<BookGenre> extractData(ResultSet results) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
