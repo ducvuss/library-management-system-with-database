@@ -66,4 +66,9 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 		return publishers;
 	}
 
+	public List<Object> get(Object[] keys) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -11,6 +11,10 @@ public class AdminDAO  extends BaseDAO<String> {
 		super(sqlConnection);
 		this.tableName = entityName;
 	}
+	
+	public AdminDAO(Connection sqlConnection) {
+		super(sqlConnection);
+	}
 
 	@Override
 	public List<String> get() throws SQLException {
@@ -45,6 +49,14 @@ public class AdminDAO  extends BaseDAO<String> {
 	public List<String> extractData(ResultSet results) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void execute(String sqlQuery) throws SQLException {
+		save(sqlQuery, new Object[] {});
+	}
+
+	public void execute(String commands, Object[] objects) throws SQLException {
+		save(commands, objects);
 	}
 
 }

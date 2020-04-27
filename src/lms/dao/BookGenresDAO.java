@@ -71,4 +71,9 @@ public class BookGenresDAO extends BaseDAO<BookGenre> {
 
 	}
 
+	public List<Object> get(Object[] keys) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

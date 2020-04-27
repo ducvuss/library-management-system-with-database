@@ -75,8 +75,18 @@ public class BookDAO extends BaseDAO<Book> {
 		return read(sqlQuery, objects);
 	}
 
-//	public void getAuthors(Integer bookId) throws SQLException {
-//		read("SELECT * FROM tbl_book_authors ba WHERE bookId=(?) JOIN tbl_authors a ON ba.authorId = a.authorId",
-//				new Object[] { bookId });
-//	}
+	public List<Object> get(Object[] keys) throws SQLException {
+		// TODO Auto-generated method stub
+		return destructData(read("SELECT * FROM " + tableName + " WHERE bookId=?", keys));
+	}
+	
+	public List<Object> destructData(ResultSet results) throws SQLException {
+		List<Object> books = new ArrayList<>();
+		
+		while (results.next()) {
+			books.add(results.getInt("bookId"));
+			books.add(results.getString("title"));
+		}
+		return books;
+	}
 }

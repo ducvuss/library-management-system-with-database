@@ -13,12 +13,12 @@ public class AdministratorMode {
 
 	public AdministratorMode(Scanner scanner) {
 		this.scanner = scanner;
-		
+
 	}
 
 	public void runAdministratorMode(boolean isRunning) {
-		String[] options = new String[] { "Go Back", "Book", "Author", "Book Loan", "Book Genres", "Borrowers",
-				"Library Branches", "Publishers" };
+		String[] options = new String[] { "Go Back", "Book", "Author", "Book Authors", "Book Loan", "Book Genres",
+				"Borrowers", "Library Branches", "Publishers", "Override due date", "Terminal" };
 		scanner = new Scanner("test");
 		while (!scanner.hasNextInt()) {
 			renderView("Welcome to Admin Menu:\nPlease select entity you want to manage:", options);
@@ -32,11 +32,68 @@ public class AdministratorMode {
 				switch (input) {
 				case 0:
 					return;
+				case 9:
+					runDueDateOverriding();
+					break;
+				case 10:
+					runTerminal();
+					break;
 				default:
 					renderSubView(options[input]);
 					scanner = new Scanner("test");
 					break;
 				}
+			}
+			scanner = new Scanner("test");
+		}
+	}
+
+	private void runDueDateOverriding() {
+		
+		scanner = new Scanner("");
+		while (!scanner.hasNext()) {
+			System.out.println("Please enter the new date in the format YYYY-d-M H-m-s, bookId, branchId, and cardNo SEPERATED by single spaces: ");
+			scanner = new Scanner(System.in);
+			if (scanner.hasNextLine()) {
+				
+				String commands = scanner.nextLine();
+				System.out.println();
+				try {
+					if (adminService.updateBookLoanDueDate(commands.split(" "))) {
+						System.out.println("successfully executed");
+						return;
+					}
+					scanner = new Scanner("");
+				} catch (Exception e) {
+
+					scanner = new Scanner("");
+				}
+				System.out.println("failed execution - try again");
+			}
+		}
+		
+	}
+
+	private void runTerminal() {
+		
+		scanner = new Scanner("");
+		while (!scanner.hasNext()) {
+			System.out.println("Please enter your command: ");
+			scanner = new Scanner(System.in);
+			if (scanner.hasNextLine()) {
+				
+				String commands = scanner.nextLine();
+				System.out.println(commands);
+				try {
+					if (adminService.execute(commands)) {
+						System.out.println("successfully executed");
+						return;
+					}
+					scanner = new Scanner("");
+				} catch (Exception e) {
+					scanner = new Scanner("");
+				}
+				System.out.println("failed execution - try again");
 			}
 		}
 	}
@@ -65,10 +122,10 @@ public class AdministratorMode {
 		}
 
 	}
-	
+
 	private void runOperation(String entity, String operation, Integer input) {
 		System.out.println(operation + " " + entity);
-		switch(input) {
+		switch (input) {
 		case 1:
 			readEntity();
 			break;
@@ -85,28 +142,30 @@ public class AdministratorMode {
 	}
 
 	private void deleteEntity() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void createEntity() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void updateEntity() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void readEntity() {
 		try {
-			adminService.readTable(currentEntity);
+			adminService.readTable(currentEntity).forEach(System.out::println);
+			;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+
+	private void readEntityByPk(Object[] keys) {
+		adminService.readTable(currentEntity, keys).forEach(System.out::println);
+
 	}
 
 	public void renderView(String title, String[] options) {

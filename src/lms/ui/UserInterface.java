@@ -32,7 +32,6 @@ public class UserInterface {
 	public UserInterface() {
 		this.scanner = new Scanner(System.in);
 	}
-
 	public void run() {
 		isRunning = true;
 		while (isRunning) {

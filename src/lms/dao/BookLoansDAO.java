@@ -108,4 +108,9 @@ public class BookLoansDAO extends BaseDAO<BookLoan> {
 				new Object[] { now, loan.getBookId(), loan.getBranchId(), loan.getCardNo() });
 	}
 
+	public List<Object> get(Object[] keys) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

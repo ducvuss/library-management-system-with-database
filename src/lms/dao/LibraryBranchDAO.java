@@ -73,4 +73,9 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 		return branches.get(0);
 	}
 
+	public List<Object> get(Object[] keys) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
