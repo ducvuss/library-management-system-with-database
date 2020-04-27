@@ -1,99 +1,120 @@
 package lms.ui;
 
+import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.stream.Stream;
+
+import lms.service.AdminService;
 
 public class AdministratorMode {
 
 	private Scanner scanner;
+	private AdminService adminService = new AdminService();
+	private String currentEntity;
 
 	public AdministratorMode(Scanner scanner) {
 		this.scanner = scanner;
+		
 	}
 
 	public void runAdministratorMode(boolean isRunning) {
-		renderView("Welcome to Admin Menu:\nPlease select entity you want to manage:", new String[] { "Book", "Author",
-				"Book Loan", "Book Genres", "Borrowers", "Library Branches", "Publishers" });
-	}
-
-	private void handleInput(String[] options) {
+		String[] options = new String[] { "Go Back", "Book", "Author", "Book Loan", "Book Genres", "Borrowers",
+				"Library Branches", "Publishers" };
+		scanner = new Scanner("test");
 		while (!scanner.hasNextInt()) {
-			System.out.println("invalid input");
+			renderView("Welcome to Admin Menu:\nPlease select entity you want to manage:", options);
 			scanner = new Scanner(System.in);
-		}
-
-		int input = scanner.nextInt();
-
-		if (input == 0) {
-			return;
-		}
-
-		if (input < 0 || input > options.length) {
-			System.out.println("invalid option");
-		}
-
-		switch (input) {
-		case 1:
-			renderSubView("Book");
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		case 7:
-			break;
-		default:
-			break;
+			if (scanner.hasNextInt()) {
+				int input = scanner.nextInt();
+				if (input < 0 || input > options.length - 1) {
+					scanner = new Scanner("test");
+					continue;
+				}
+				switch (input) {
+				case 0:
+					return;
+				default:
+					renderSubView(options[input]);
+					scanner = new Scanner("test");
+					break;
+				}
+			}
 		}
 	}
 
 	public void renderSubView(String title) {
-		renderView(title, new String[] { "Read", "Create", "Update", "Delete" });
-		System.out.println(title);
+		currentEntity = title;
+		String[] options = new String[] { "Quit", "Read", "Create", "Update", "Delete" };
+		scanner = new Scanner("test");
 		while (!scanner.hasNextInt()) {
-			System.out.println("invalid input");
+			renderView("You are managing " + title, options);
 			scanner = new Scanner(System.in);
+			if (scanner.hasNextInt()) {
+				int input = scanner.nextInt();
+				if (input < 0 || input > options.length - 1) {
+					scanner = new Scanner("test");
+					continue;
+				}
+				switch (input) {
+				case 0:
+					return;
+				default:
+					runOperation(title, options[input], input);
+					break;
+				}
+			}
 		}
 
-		int input = scanner.nextInt();
-
-		if (input == 0) {
-			return;
-		}
-
-		if (input < 0 || input > 4) {
-			System.out.println("invalid option");
-		}
-
-		switch (input) {
+	}
+	
+	private void runOperation(String entity, String operation, Integer input) {
+		System.out.println(operation + " " + entity);
+		switch(input) {
 		case 1:
+			readEntity();
 			break;
 		case 2:
+			updateEntity();
 			break;
 		case 3:
+			createEntity();
 			break;
 		case 4:
-			break;
-		default:
+			deleteEntity();
 			break;
 		}
+	}
 
+	private void deleteEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void updateEntity() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void readEntity() {
+		try {
+			adminService.readTable(currentEntity);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void renderView(String title, String[] options) {
 		System.out.println(title);
-		int count = 1;
-		System.out.println("0 - Go Back ");
+		int count = 0;
 		for (String option : options) {
 			System.out.println(count++ + " - " + option);
 		}
-		handleInput(options);
 	}
 
 }

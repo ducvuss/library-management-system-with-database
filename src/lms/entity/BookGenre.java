@@ -7,7 +7,7 @@ package lms.entity;
  * @author ducba
  *
  */
-public class BookGenre {
+public class BookGenre implements StringFormattable {
 	private Integer genreId;
 	private Integer bookId;
 	/**
@@ -39,6 +39,9 @@ public class BookGenre {
 	 */
 	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
+	}
+	public String toRowString() {
+		return stringify(bookId.toString(), genreId.toString());
 	}
 
 }

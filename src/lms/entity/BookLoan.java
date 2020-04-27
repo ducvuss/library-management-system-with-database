@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * @author ducba
  *
  */
-public class BookLoan {
+public class BookLoan implements StringFormattable {
 	private Integer bookId;
 	private Integer branchId;
 	private Integer cardNo;
@@ -93,6 +93,9 @@ public class BookLoan {
 	 */
 	public void setDateIn(LocalDateTime dateIn) {
 		this.dateIn = dateIn;
+	}
+	public String toRowString() {
+		return stringify(bookId.toString(), branchId.toString(), cardNo.toString(), dateOut.toString(), dueDate.toString(), dateIn.toString());
 	}
 
 }

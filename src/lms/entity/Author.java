@@ -7,7 +7,7 @@ package lms.entity;
  * @author ducba
  *
  */
-public class Author {
+public class Author implements StringFormattable {
 	private Integer authorId;
 	private String authorName;
 
@@ -32,5 +32,9 @@ public class Author {
 
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+
+	public String toRowString() {
+		return stringify(authorId.toString(), authorName);
 	}
 }

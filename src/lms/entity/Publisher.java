@@ -7,7 +7,7 @@ package lms.entity;
  * @author ducba
  *
  */
-public class Publisher {
+public class Publisher implements StringFormattable {
 	private Integer publisherId;
 	private String publisherName;
 	
@@ -44,6 +44,9 @@ public class Publisher {
 	 */
 	public void setPublisherName(String publisherName) {
 		this.publisherName = publisherName;
+	}
+	public String toRowString() {
+		return stringify(publisherId.toString(), publisherName);
 	}
 
 }

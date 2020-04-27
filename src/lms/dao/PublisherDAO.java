@@ -3,6 +3,7 @@
  */
 package lms.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 	 */
 	public PublisherDAO() throws SQLException {
 		super();
+		this.tableName = "tbl_publisher";
+	}
+
+	public PublisherDAO(Connection conn) {
+		super(conn);
 		this.tableName = "tbl_publisher";
 	}
 
