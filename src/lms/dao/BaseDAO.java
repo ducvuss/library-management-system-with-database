@@ -16,6 +16,7 @@ import java.util.List;
  */
 public abstract class BaseDAO<T> implements Executable<T> {
 
+	protected String tableName;
 	public static final String url = "jdbc:mysql://localhost:3306/library?useSSL=false";
 	public static final String user = "root";
 	public static final String password = "test";
@@ -55,5 +56,19 @@ public abstract class BaseDAO<T> implements Executable<T> {
 	public abstract void delete(Integer id) throws SQLException;
 
 	public abstract List<T> extractData(ResultSet results) throws SQLException;
+
+	/**
+	 * @return the tableName
+	 */
+	public String getTableName() {
+		return tableName;
+	}
+
+	/**
+	 * @param tableName the tableName to set
+	 */
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 
 }

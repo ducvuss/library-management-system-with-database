@@ -12,6 +12,8 @@ import java.util.List;
 
 import lms.dao.BookCopiesDAO;
 import lms.dao.BookDAO;
+import lms.dao.BookLoansDAO;
+import lms.entity.BookLoan;
 import lms.utils.DbConnection;
 
 /**
@@ -60,12 +62,14 @@ public class BorrowerService {
 		return books;
 	}
 
-	public void checkOutBook(Integer bookId, Integer branchId, Integer noOfCopies) throws SQLException  {
+	public void checkOutBook(Integer bookId, Integer branchId, Integer noOfCopies, BookLoan loan) throws SQLException  {
 		Connection sqlConnection = null;
 		try {
 			sqlConnection = dbConnection.getConnection();
 			BookCopiesDAO bookCopiesDAO = new BookCopiesDAO(sqlConnection);
 			bookCopiesDAO.put(bookId, branchId, noOfCopies - 1);
+			BookLoansDAO bookLoansDAO = new BookLoansDAO(sqlConnection);
+			bookLoansDAO.post(loan);
 			sqlConnection.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

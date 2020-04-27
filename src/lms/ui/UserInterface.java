@@ -6,6 +6,8 @@ package lms.ui;
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+
+import lms.entity.BookLoan;
 import lms.entity.LibraryBranch;
 import lms.service.BorrowerService;
 import lms.service.GeneralService;
@@ -176,13 +178,13 @@ public class UserInterface {
 			case 0:
 				return;
 			case 1:
-				runCheckOutMode(branch);
+				runBookMode(branch);
 				break;
 			}
 		}
 	}
 
-	private void runCheckOutMode(LibraryBranch branch) {
+	private void runBookMode(LibraryBranch branch) {
 		System.out.println("");
 		System.out.println("0 - Go back");
 		System.out.println("Select the book you want to checkout");
@@ -211,14 +213,18 @@ public class UserInterface {
 		if (noOfCopies > 0) {
 			System.out.println(noOfCopies);
 			try {
-				borrowerService.checkOutBook(bookId, branch.getBranchId(), noOfCopies);
+				BookLoan loan = new BookLoan();
+				loan.setBookId(bookId);
+				loan.setBranchId(branch.getBranchId());
+				loan.setCardNo(cardNo);
+				borrowerService.checkOutBook(bookId, branch.getBranchId(), noOfCopies, loan);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-		System.out.println("this book is not available for checkouts");
+		System.out.println("successfully checked out");
 	}
 
 	private void runBranchMode(Integer branchId) {
