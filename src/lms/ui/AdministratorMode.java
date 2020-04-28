@@ -62,6 +62,7 @@ public class AdministratorMode {
 				try {
 					if (adminService.updateBookLoanDueDate(commands.split(" "))) {
 						System.out.println("successfully executed");
+						scanner = new Scanner("");
 						return;
 					}
 					scanner = new Scanner("");
@@ -84,7 +85,10 @@ public class AdministratorMode {
 			if (scanner.hasNextLine()) {
 				
 				String commands = scanner.nextLine();
-				if (commands.equals("quit")) return;
+				if (commands.equals("quit")) {
+					scanner = new Scanner("");
+					return;
+				}
 				try {
 					if (adminService.execute(commands)) {
 						System.out.println("successfully executed");
@@ -189,7 +193,11 @@ public class AdministratorMode {
 			if (scanner.hasNextLine()) {
 				
 				String commands = scanner.nextLine();
-				if (commands.equals("quit")) return;
+				if (commands.equals("quit")) {
+
+					scanner = new Scanner("");
+					return;
+				}
 				System.out.println();
 				try {
 
@@ -211,18 +219,24 @@ public class AdministratorMode {
 	}
 
 	private void updateEntity() {
-		System.out.println("Create new " + currentEntity);
+		System.out.println("update" + currentEntity);
 
 		
 		scanner = new Scanner("");
 		while (!scanner.hasNext()) {
 			System.out.println("Please enter the values of entity seperated by `-`: ");
 			System.out.println("You can enter n/a if you don't know the value: ");
+			System.out.println("You can enter quit to return to go back to the previous menu: ");
 			
 			scanner = new Scanner(System.in);
 			if (scanner.hasNextLine()) {
 				
 				String commands = scanner.nextLine();
+				if (commands.equals("quit")) {
+
+					scanner = new Scanner("");
+					return;
+				}
 				System.out.println();
 				try {
 
@@ -240,6 +254,7 @@ public class AdministratorMode {
 				System.out.println("failed execution - try again");
 			}
 		}
+
 	}
 
 	private void readEntity() {
