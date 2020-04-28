@@ -83,4 +83,9 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 	public void delete(String[] primaryKeys) throws SQLException {
 		save("delete from " + tableName + " WHERE cardNo=?", primaryKeys);
 	}
+
+	public void put(String[] objects) throws SQLException {
+		save("insert into tbl_borrower (name, address, phone) values (?,?,?) where cardNo=?", objects);
+		
+	}
 }

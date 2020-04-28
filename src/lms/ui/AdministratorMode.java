@@ -240,7 +240,7 @@ public class AdministratorMode {
 				System.out.println();
 				try {
 
-					if (adminService.insertTable(currentEntity, commands.split("-"))) {
+					if (adminService.updateTable(currentEntity, commands.split("-"))) {
 						System.out.println("successfully executed");
 						scanner = new Scanner("");
 						return;

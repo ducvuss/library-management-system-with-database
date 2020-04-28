@@ -97,4 +97,8 @@ public class BookDAO extends BaseDAO<Book> {
 	public void post(Object[] objects) throws SQLException {
 		save("insert into tbl_book (title, pubId) values (?,?)", objects);
 	}
+
+	public void put(String[] objects) throws SQLException {
+		save("insert into tbl_book (title, pubId) values (?,?) where bookId=?", objects);
+	}
 }

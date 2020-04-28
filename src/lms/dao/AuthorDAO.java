@@ -94,4 +94,8 @@ public class AuthorDAO extends BaseDAO<Author> {
 	public void delete(String[] primaryKeys) throws SQLException {
 		save("delete from " + tableName + " WHERE authorId=?", primaryKeys);
 	}
+
+	public void put(String[] objects) throws SQLException {
+		save("update tbl_author (authorName) values (?) where authorId=?", objects);
+	}
 }

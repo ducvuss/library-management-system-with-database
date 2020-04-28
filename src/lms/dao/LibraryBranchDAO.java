@@ -86,4 +86,8 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 		save("delete from " + tableName + " WHERE branchId=?", primaryKeys);
 	}
 
+	public void put(String[] objects) throws SQLException {
+		save("update tbl_library_branch (branchName, branchAddress) values (?,?) where branchId=?", objects);
+	}
+
 }

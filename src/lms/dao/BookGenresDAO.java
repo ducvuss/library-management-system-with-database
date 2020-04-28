@@ -86,4 +86,9 @@ public class BookGenresDAO extends BaseDAO<BookGenre> {
 		
 	}
 
+	public void put(String[] objects) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

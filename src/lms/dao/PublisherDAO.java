@@ -78,4 +78,8 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 	public void delete(String[] primaryKeys) throws SQLException {
 		save("delete from " + tableName + " WHERE publisherId=?", primaryKeys);
 	}
+
+	public void put(String[] objects) throws SQLException {
+		save("update tbl_publisher (publisherName, publisherAddress, publisherPhone) values (?,?,?) where publisherId=?", objects);
+	}
 }

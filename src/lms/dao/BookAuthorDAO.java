@@ -83,4 +83,9 @@ public class BookAuthorDAO extends BaseDAO<BookAuthor>{
 		save("delete from " + tableName + " WHERE bookId=? and authorId=?", primaryKeys);
 	}
 
+	public void put(String[] objects) throws SQLException {
+//		save("insert into tbl_book_authors (bookId, authorId) values (?,?)", objects);
+		System.out.println("You can't update book author");
+	}
+
 }

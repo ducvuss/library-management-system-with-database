@@ -238,4 +238,46 @@ public class AdminService {
 		}
 	}
 
+	public boolean updateTable(String currentEntity, String[] objects) throws SQLException {
+//		System.out.println(objects.length);
+		Connection conn = dbConn.getConnection();
+		try { 
+			switch (currentEntity) {
+			case "Book":
+				new BookDAO(conn).put(objects);
+				break;
+			case "Author":
+				new AuthorDAO(conn).put(objects);
+				break;
+			case "Book Authors":
+				new BookAuthorDAO(conn).put(objects);
+				break;
+			case "Book Loan":
+				new BookLoansDAO(conn).put(objects);
+				break;
+			case "Book Genres":
+				new BookGenresDAO(conn).put(objects);
+				break;
+			case "Borrowers":
+				new BorrowerDAO(conn).put(objects);
+				break;
+			case "Library Branches":
+				new LibraryBranchDAO(conn).put(objects);
+				break;
+			case "Publishers":
+				new PublisherDAO(conn).put(objects);
+				break;
+			default:
+				break;
+				
+			}
+			conn.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+			return false;
+		}
+	}
+
 }

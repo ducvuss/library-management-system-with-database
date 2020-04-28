@@ -120,4 +120,8 @@ public class BookLoansDAO extends BaseDAO<BookLoan> {
 	public void delete(String[] primaryKeys) throws SQLException {
 		save("delete from " + tableName + " WHERE bookId=? and branchId=? and cardNo=? and dateOut=?", primaryKeys);
 	}
+
+	public void put(String[] objects) throws SQLException {
+		save("update tbl_book_loans (dueDate, dateIn) values (?,?) where bookId=? and branchId=? and cardNo=? and dateOut=?", objects);
+	}
 }
