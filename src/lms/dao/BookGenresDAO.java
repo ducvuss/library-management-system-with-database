@@ -76,4 +76,14 @@ public class BookGenresDAO extends BaseDAO<BookGenre> {
 		return null;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_book_genres (bookId, genre_id) values (?,?)", objects);
+		
+	}
+
+	public void delete(String[] primaryKeys) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

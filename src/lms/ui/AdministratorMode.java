@@ -53,6 +53,7 @@ public class AdministratorMode {
 		scanner = new Scanner("");
 		while (!scanner.hasNext()) {
 			System.out.println("Please enter the new date in the format YYYY-d-M H-m-s, bookId, branchId, and cardNo SEPERATED by single spaces: ");
+			System.out.println("You can enter quit to return to go back to the previous menu: ");
 			scanner = new Scanner(System.in);
 			if (scanner.hasNextLine()) {
 				
@@ -83,10 +84,11 @@ public class AdministratorMode {
 			if (scanner.hasNextLine()) {
 				
 				String commands = scanner.nextLine();
-				System.out.println(commands);
+				if (commands.equals("quit")) return;
 				try {
 					if (adminService.execute(commands)) {
 						System.out.println("successfully executed");
+						scanner = new Scanner("");
 						return;
 					}
 					scanner = new Scanner("");
@@ -130,10 +132,10 @@ public class AdministratorMode {
 			readEntity();
 			break;
 		case 2:
-			updateEntity();
+			createEntity();
 			break;
 		case 3:
-			createEntity();
+			updateEntity();
 			break;
 		case 4:
 			deleteEntity();
@@ -142,31 +144,113 @@ public class AdministratorMode {
 	}
 
 	private void deleteEntity() {
+		System.out.println("Delete" + currentEntity);
+
+		scanner = new Scanner("");
+		while (!scanner.hasNext()) {
+			System.out.println("Please enter the pk of the item to remove it: ");
+			System.out.println("You can enter quit to return to go back to the previous menu: ");
+			
+			scanner = new Scanner(System.in);
+			if (scanner.hasNextLine()) {
+				
+				String commands = scanner.nextLine();
+				if (commands.equals("quit")) return;
+				try {
+
+					if (adminService.deleteFromTable(currentEntity, commands.split("-"))) {
+						System.out.println("successfully executed");
+						scanner = new Scanner("");
+						return;
+					}
+					scanner = new Scanner("");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					scanner = new Scanner("");
+				}
+				System.out.println("failed execution - try again");
+			}
+		}
 
 	}
 
 	private void createEntity() {
-		// TODO Auto-generated method stub
+		System.out.println("Create new " + currentEntity);
+
+		
+		scanner = new Scanner("");
+		while (!scanner.hasNext()) {
+			System.out.println("Please enter the values of entity seperated by `-`: ");
+			System.out.println("You can enter n/a if you don't know the value: ");
+			System.out.println("You can enter quit to return to go back to the previous menu: ");
+			
+			scanner = new Scanner(System.in);
+			if (scanner.hasNextLine()) {
+				
+				String commands = scanner.nextLine();
+				if (commands.equals("quit")) return;
+				System.out.println();
+				try {
+
+					if (adminService.insertTable(currentEntity, commands.split("-"))) {
+						System.out.println("successfully executed");
+						scanner = new Scanner("");
+						return;
+					}
+					scanner = new Scanner("");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					scanner = new Scanner("");
+				}
+				System.out.println("failed execution - try again");
+			}
+		}
 
 	}
 
 	private void updateEntity() {
+		System.out.println("Create new " + currentEntity);
+
+		
+		scanner = new Scanner("");
+		while (!scanner.hasNext()) {
+			System.out.println("Please enter the values of entity seperated by `-`: ");
+			System.out.println("You can enter n/a if you don't know the value: ");
+			
+			scanner = new Scanner(System.in);
+			if (scanner.hasNextLine()) {
+				
+				String commands = scanner.nextLine();
+				System.out.println();
+				try {
+
+					if (adminService.insertTable(currentEntity, commands.split("-"))) {
+						System.out.println("successfully executed");
+						scanner = new Scanner("");
+						return;
+					}
+					scanner = new Scanner("");
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					scanner = new Scanner("");
+				}
+				System.out.println("failed execution - try again");
+			}
+		}
 	}
 
 	private void readEntity() {
 		try {
 			adminService.readTable(currentEntity).forEach(System.out::println);
-			;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void readEntityByPk(Object[] keys) {
-		adminService.readTable(currentEntity, keys).forEach(System.out::println);
-
-	}
 
 	public void renderView(String title, String[] options) {
 		System.out.println(title);

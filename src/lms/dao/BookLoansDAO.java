@@ -113,4 +113,11 @@ public class BookLoansDAO extends BaseDAO<BookLoan> {
 		return null;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_book_loans (bookId, branchId, cardNo, dateOut, dueDate, dateIn) values (?,?,?,?,?,?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE bookId=? and branchId=? and cardNo=? and dateOut=?", primaryKeys);
+	}
 }

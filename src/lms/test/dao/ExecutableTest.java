@@ -30,5 +30,22 @@ public class ExecutableTest implements Executable<Book>{
 			read(dbConnection.getConnection(), "Select * from tbl_books");
 		});
 	}
+	
+//	@Test
+//	public void testSaveMethod() {
+//		// TODO Auto-generated constructor stub
+//		
+//		DbConnection dbConnection = new DbConnection();
+//		try {
+//			save(dbConnection.getConnection(), "Select * from tbl_book", new Object[] {});
+//			assertNotNull(result);
+//		} catch (SQLException e) {
+//			
+//		}
+//		
+//		assertThrows(SQLException.class, () -> {
+//			read(dbConnection.getConnection(), "Select * from tbl_books");
+//		});
+//	}
 
 }

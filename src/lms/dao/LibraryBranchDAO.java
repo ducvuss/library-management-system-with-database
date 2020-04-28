@@ -78,4 +78,12 @@ public class LibraryBranchDAO extends BaseDAO<LibraryBranch> {
 		return null;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_library_branch (branchName, branchAddress) values (?,?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE branchId=?", primaryKeys);
+	}
+
 }

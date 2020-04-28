@@ -86,4 +86,12 @@ public class AuthorDAO extends BaseDAO<Author> {
 		}
 		return items;
 	}
+
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_author (authorName) values (?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE authorId=?", primaryKeys);
+	}
 }

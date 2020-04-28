@@ -7,7 +7,7 @@ package lms.entity;
  * @author ducba
  *
  */
-public class Borrower {
+public class Borrower implements StringFormattable {
 	private Integer cardNo;
 	private String name;
 	private String address;
@@ -76,4 +76,7 @@ public class Borrower {
 		this.phone = phone;
 	}
 
+	public String toRowString() {
+		return stringify(cardNo.toString(), name.toString(), address.toString(), phone.toString());
+	}
 }

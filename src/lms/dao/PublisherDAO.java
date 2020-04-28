@@ -71,4 +71,11 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 		return null;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_publisher (publisherName, publisherAddress, publisherPhone) values (?,?,?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE publisherId=?", primaryKeys);
+	}
 }

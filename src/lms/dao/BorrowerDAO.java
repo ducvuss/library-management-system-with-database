@@ -33,6 +33,8 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 	public List<Borrower> get() throws SQLException {
 		return extractData(read("SELECT * FROM tbl_borrower"));
 	}
+	
+	
 
 	public Borrower getByCardNo(Integer cardNo) throws SQLException {
 
@@ -74,4 +76,11 @@ public class BorrowerDAO extends BaseDAO<Borrower> {
 		return borrowers;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_borrower (cardNo, name, address, phone) values (?,?,?,?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE cardNo=?", primaryKeys);
+	}
 }

@@ -75,4 +75,12 @@ public class BookAuthorDAO extends BaseDAO<BookAuthor>{
 		return books;
 	}
 
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_book_authors (bookId, authorId) values (?,?)", objects);
+	}
+
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from " + tableName + " WHERE bookId=? and authorId=?", primaryKeys);
+	}
+
 }

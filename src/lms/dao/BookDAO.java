@@ -54,10 +54,14 @@ public class BookDAO extends BaseDAO<Book> {
 		save(new Table(tableName).delete("bookId"), new Object[] { bookId });
 	}
 
+	public void delete(Object[] objects) throws SQLException {
+		save("delete from tbl_book WHERE bookId=?", objects);
+	}
+
 	@Override
 	public List<Book> extractData(ResultSet results) throws SQLException {
 		List<Book> books = new ArrayList<>();
-		
+
 		while (results.next()) {
 			Book book = new Book();
 			book.setTitle(results.getString("title"));
@@ -79,14 +83,18 @@ public class BookDAO extends BaseDAO<Book> {
 		// TODO Auto-generated method stub
 		return destructData(read("SELECT * FROM " + tableName + " WHERE bookId=?", keys));
 	}
-	
+
 	public List<Object> destructData(ResultSet results) throws SQLException {
 		List<Object> books = new ArrayList<>();
-		
+
 		while (results.next()) {
 			books.add(results.getInt("bookId"));
 			books.add(results.getString("title"));
 		}
 		return books;
+	}
+
+	public void post(Object[] objects) throws SQLException {
+		save("insert into tbl_book (title, pubId) values (?,?)", objects);
 	}
 }

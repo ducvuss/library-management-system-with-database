@@ -35,6 +35,9 @@ public interface Executable<T> {
 		PreparedStatement sqlStatement = sqlConnection.prepareStatement(sqlQuery);
 		int index = 1;
 		for (Object object : objects) {
+			if (object.equals("n/a")) {
+				object = null;
+			}
 			sqlStatement.setObject(index, object);
 			index++;
 		}
