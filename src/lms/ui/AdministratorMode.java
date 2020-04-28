@@ -3,6 +3,14 @@ package lms.ui;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import lms.dao.AuthorDAO;
+import lms.dao.BookAuthorDAO;
+import lms.dao.BookDAO;
+import lms.dao.BookGenresDAO;
+import lms.dao.BookLoansDAO;
+import lms.dao.BorrowerDAO;
+import lms.dao.LibraryBranchDAO;
+import lms.dao.PublisherDAO;
 import lms.service.AdminService;
 
 public class AdministratorMode {
@@ -218,6 +226,39 @@ public class AdministratorMode {
 
 	}
 
+	private void showFormat() {
+		System.out.print("Format ");
+		switch (currentEntity) {
+		case "Book":
+			System.out.println("title");
+			break;
+		case "Author":
+			System.out.println("authorName");
+			break;
+		case "Book Authors":
+			System.out.println("Can't update this table sorry");
+			break;
+		case "Book Loan":
+			System.out.println("dueDate-dateIn-bookId-branchId-cardNo-dateOut");
+			break;
+		case "Book Genres":
+			System.out.println("Can't update this entity sorry");
+			break;
+		case "Borrowers":
+			System.out.println("name-address-phone-cardNo");
+			break;
+		case "Library Branches":
+			System.out.println("branchName-branchAddress-branchId");
+			break;
+		case "Publishers":
+			System.out.println("publisherName-publisherAddress-publisherPhone-publisherId)");
+			break;
+		default:
+			break;
+			
+		}
+	}
+
 	private void updateEntity() {
 		System.out.println("update" + currentEntity);
 
@@ -225,6 +266,7 @@ public class AdministratorMode {
 		scanner = new Scanner("");
 		while (!scanner.hasNext()) {
 			System.out.println("Please enter the values of entity seperated by `-`: ");
+			showFormat();
 			System.out.println("You can enter n/a if you don't know the value: ");
 			System.out.println("You can enter quit to return to go back to the previous menu: ");
 			

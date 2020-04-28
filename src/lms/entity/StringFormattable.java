@@ -12,4 +12,11 @@ public interface StringFormattable {
 			return str1 + " - " + str2;
 		});
 	}
+
+	public default String accumulateString(String str1, String str2) {
+		if (str1.isEmpty()) {
+			return str2;
+		}
+		return str1 + "," + str2;
+	}
 }

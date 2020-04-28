@@ -81,14 +81,13 @@ public class BookGenresDAO extends BaseDAO<BookGenre> {
 		
 	}
 
-	public void delete(String[] primaryKeys) {
-		// TODO Auto-generated method stub
+	public void delete(String[] primaryKeys) throws SQLException {
+		save("delete from tbl_book_genres where bookId=? and genre_id=?", primaryKeys);
 		
 	}
 
 	public void put(String[] objects) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Entity is not updateable");
 	}
 
 }

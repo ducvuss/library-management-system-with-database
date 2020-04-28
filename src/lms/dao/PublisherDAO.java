@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lms.entity.Publisher;
+import lms.entity.StringFormattable;
 import lms.utils.Table;
 
 /**
  * @author ducba
  *
  */
-public class PublisherDAO extends BaseDAO<Publisher> {
+public class PublisherDAO extends BaseDAO<Publisher> implements StringFormattable {
 
 	private String tableName;
 
@@ -46,7 +47,8 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 
 	@Override
 	public void put(Integer publisherId, Publisher publisher) throws SQLException {
-		save("UPDATE tbl_publisher SET publisherName=? WHERE publisherId=?", new Object[] { publisher.getPublisherName(), publisherId });
+		save("UPDATE tbl_publisher SET publisherName=? WHERE publisherId=?",
+				new Object[] { publisher.getPublisherName(), publisherId });
 	}
 
 	@Override
@@ -80,6 +82,22 @@ public class PublisherDAO extends BaseDAO<Publisher> {
 	}
 
 	public void put(String[] objects) throws SQLException {
-		save("update tbl_publisher (publisherName, publisherAddress, publisherPhone) values (?,?,?) where publisherId=?", objects);
+		List<String> columns = new ArrayList<String>();
+		List<String> strings = new ArrayList<String>();
+		if (!"n/a".equals(objects[0])) {
+			strings.add(objects[0]);
+			columns.add("publisherName=?");
+		}
+		if (!"n/a".equals(objects[1])) {
+			strings.add(objects[1]);
+			columns.add("publisherAddress=?");
+		}
+		if (!"n/a".equals(objects[2])) {
+			strings.add(objects[2]);
+			columns.add("publisherPhone=?");
+		}
+		strings.add(objects[3]);
+		save("update tbl_publisher set " + columns.stream().reduce("", (x, y) -> accumulateString(x, y))
+				+ " where publisherId=?", strings.toArray());
 	}
 }
